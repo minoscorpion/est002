@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="exemplosjs/ordenando.js"></script>
+  <title>Sort and Shuffle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    button {
+      margin-top: 10px;
+    }
+
+    pre, ul {
+      margin-top: 20px;
+      white-space: pre-wrap;
+    }
+
+    button
+    {
+        background-color: blue;
+        color: white;
+    }
+
+    input
+    {
+        width: 100%;
+    }
+
+    select
+    {
+        width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ordenando.html</h1>
+
+  <form id="sortForm">
+    <label for="inputValue">Inserir valor:</label>
+    <input type="text" id="inputValue" placeholder="Ex: 5" required>
+    <br/>
+    <button type="button" onclick="addValue()">Adicionar</button>
+<br/>
+<br/>
+    <select id="algorithm" required>
+      <option value="bubbleSort">Bubble Sort</option>
+      <option value="selectionSort">Selection Sort</option>
+      <option value="quickSort">Quick Sort</option>
+    </select>
+<br/>
+    <div style="display: inline-block;">
+        <button type="button" onclick="applySort()">Aplicar</button>
+        <button type="button" onclick="Misturar()">Misturar</button>
+    </div>
+  </form>
+
+  <hr/>
+  <ul id="valuesList"></ul>
+  <pre id="result"></pre>
+
+  <script>
+    
+    function addValue() {
+      const inputValue = document.getElementById('inputValue').value;
+      const valuesList = document.getElementById('valuesList');
+
+      if (inputValue.trim() !== '') {
+        const listItem = document.createElement('li');
+        listItem.textContent = inputValue;
+        valuesList.appendChild(listItem);
+        document.getElementById('inputValue').value = '';
+      }
+    }
+
+    function Misturar()
+    {
+        const valuesList = document.getElementById('valuesList');
+        const inputValues = Array.from(valuesList.children).map(item => parseInt(item.textContent.trim(), 10));
+
+        arrayRandom = shuffleArray(inputValues);
+
+         // Atualize os itens da lista com os valores ordenados
+        const listItems = valuesList.children;
+        for (let i = 0; i < listItems.length; i++) {
+            listItems[i].textContent = arrayRandom[i];
+        }
+        
+
+        document.getElementById('result').textContent = `Array ordenado (${algorithm}): ${arrayRandom.join(', ')}`;
+    }
+
+    function applySort() {
+      const valuesList = document.getElementById('valuesList');
+      const inputValues = Array.from(valuesList.children).map(item => parseInt(item.textContent.trim(), 10));
+      const algorithm = document.getElementById('algorithm').value;
+
+      if (inputValues.some(value => isNaN(value))) {
+        alert('Por favor, insira valores numéricos válidos.');
+        return;
+      }
+
+      const sortedValues = [...inputValues];
+      switch (algorithm) {
+        case 'bubbleSort':
+          retorno = bubbleSort(sortedValues);
+          break;
+        case 'selectionSort':
+          selectionSort(sortedValues);
+          break;
+        case 'quickSort':
+          quickSort(sortedValues, 0, sortedValues.length - 1);
+          break;
+        default:
+          alert('nada foi selecionado.');
+          return;
+      }
+
+        const listItems = valuesList.children;
+        for (let i = 0; i < listItems.length; i++) {
+            listItems[i].textContent = sortedValues[i];
+        }
+
+      document.getElementById('result').textContent = `Array ordenado (${algorithm}): ${sortedValues.join(', ')}`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Receitas</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    
+    .container-fluid {
+      padding: 20px;
+    }
+    #pnlCatalogo {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body onload="preencheCatalogo()" class="bg-warning">
+
+  <div class="container-fluid bg-warning">
+    <h1>Catálogo de Receitas</h1>
+    
+    <div id="pnlCatalogo"></div>
+
+    <script>
+      const receitas = [
+        {
+          titulo: 'Receita 1',
+          imagem: 'imagem1.jpg',
+          preparo: 'Instruções de preparo para a receita 1',
+          ingredientes: ['Ingrediente 1', 'Ingrediente 2', 'Ingrediente 3']
+        },
+        {
+          titulo: 'Receita 2',
+          imagem: 'imagem2.jpg',
+          preparo: 'Instruções de preparo para a receita 2',
+          ingredientes: ['Ingrediente A', 'Ingrediente B', 'Ingrediente C']
+        }
+        ,
+        {
+          titulo: 'Receita 3',
+          imagem: 'imagem2.jpg',
+          preparo: 'Instruções de preparo para a receita 2',
+          ingredientes: ['Ingrediente A', 'Ingrediente B', 'Ingrediente C']
+        }
+        
+      ];
+
+      function getListaIngredientes(ingredientes) {
+        return `<ul>${ingredientes.map(ingrediente => `<li>${ingrediente}</li>`).reduce((acc, item) => acc + item, '')}</ul>`;
+      }
+
+      function getCard(receita) {
+        return `
+          <div class="card" style="width: 250px;">
+            <img src="${receita.imagem}" class="card-img-top" alt="${receita.titulo}">
+            <div class="card-body">
+              <h5 class="card-title">${receita.titulo}</h5>
+              <div class="card-text">
+                ${getListaIngredientes(receita.ingredientes)}
+                <hr>
+                ${receita.preparo}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function preencheCatalogo() {
+        const pnlCatalogo = document.getElementById('pnlCatalogo');
+        const htmlReceitas = receitas.map(receita => getCard(receita)).reduce((acc, card) => acc + card, '');
+        pnlCatalogo.innerHTML = htmlReceitas;
+      }
+    </script>
+  </div>
+
+</body>
+</html>
